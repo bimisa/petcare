@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Vet Dashboard</h2>
+
+    <!-- Enter Vaccination Information -->
+     <div class="card mb-4">
+        <div class="card-header">Enter Vaccination Information</div>
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                <div class="form-group">
+                    {{ form.pet.label_tag }}
+                    {{ form.pet|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ form.vaccination_name.label_tag }}
+                    {{ form.vaccination_name|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ form.vaccination_date.label_tag }}
+                    {{ form.vaccination_date|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ form.next_vaccination_date.label_tag }}
+                    {{ form.next_vaccination_date|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ form.vaccination_no.label_tag }}
+                    {{ form.vaccination_no|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ form.notes.label_tag }}
+                    {{ form.notes|add_class:"form-control" }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    {% comment %}
+    <!-- View Pet Records -->
+    <h3 class="mt-4">Pet Records</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Pet Name</th>
+                <th>Owner</th>
+                <th>Vaccination Name</th>
+                <th>Date Administered</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pet in pets %}
+                {% for vaccination in pet.vaccinations.all %}
+                    <tr>
+                        <td>{{ pet.name }}</td>
+                        <td>{{ pet.owner.username }}</td>
+                        <td>{{ vaccination.name }}</td>
+                        <td>{{ vaccination.date_administered }}</td>
+                        <td>{{ vaccination.note }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endcomment %}
+    <!-- Upcoming Appointments Section -->
+        <div class="col-md-6">
+            <h2 class="mb-3">Upcoming Appointments</h2>
+            <ul class="list-group">
+                {% for appointment in upcoming_appointments %}
+                <li class="list-group-item">
+                    {% if not appointment.is_approved %}
+                        <a class="btn btn-success" href="{% url 'core:approve_appointment' appointment.id %}">Approve</a>
+                    {% else %}
+                        <strong class="text-center badge badge-primary badge-pill">Status: {{appointment.status | title}}</strong>
+                    {% endif %}
+                    <br>
+                    <br>
+                    <strong>Date:</strong> {{ appointment.date }} at {{ appointment.time }}<br>
+                    <strong>Pet:</strong> {{ appointment.pet.name }}<br>
+                    <strong>Type:</strong> {{ appointment.get_type_display }}<br>
+                    {% if appointment.service_provider %}
+                    <strong>With:</strong> {{ appointment.service_provider.username }}<br>
+                    {% endif %}
+                    <strong>Notes:</strong> {{ appointment.notes }}
+
+                </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Search Vaccination Information</h2>
+
+    <form method="get">
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th>Owner SSN</th>
+                <th>Pet Name</th>
+                <th>Vaccination Name</th>
+                <th>Date Administered</th>
+                <th>Note</th>
+                <th>Vet</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vaccination in vaccinations %}
+            <tr>
+                <td>{{ vaccination.pet.owner.ssn }}</td>
+                <td>{{ vaccination.pet.name }}</td>
+                <td>{{ vaccination.vaccination_name }}</td>
+                <td>{{ vaccination.vaccination_date }}</td>
+                <td>{{ vaccination.notes }}</td>
+                <td>{{ vaccination.vet }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

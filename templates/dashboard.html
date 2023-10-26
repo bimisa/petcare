@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Your Pets Section -->
+        <div class="col-md-6">
+            <h2 class="mb-3">Your Pets</h2>
+            <ul class="list-group">
+                {% for pet in user_pets %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    #ID {{ pet.id }} <br>{{ pet.name }} ({{ pet.breed }}) {{ pet.age }} yr
+                    <span class="badge badge-primary badge-pill">DOB: {{ pet.date_of_birth }}</span>
+                </li>
+                                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Upcoming Appointments Section -->
+        <div class="col-md-6">
+            <h2 class="mb-3">Upcoming Appointments</h2>
+            <ul class="list-group">
+                {% for appointment in upcoming_appointments %}
+                <li class="list-group-item">
+                    <strong>Date:</strong> {{ appointment.date }} at {{ appointment.time }}<br>
+                    <strong>Pet:</strong> {{ appointment.pet.name }}<br>
+                    <strong>Type:</strong> {{ appointment.get_type_display }}<br>
+                    {% if appointment.service_provider %}
+                    <strong>With:</strong> {{ appointment.service_provider.username }}<br>
+                    {% endif %}
+                    <strong>Notes:</strong> {{ appointment.notes }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
