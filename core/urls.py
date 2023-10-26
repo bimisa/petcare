@@ -7,6 +7,7 @@ app_name = 'core'
 urlpatterns = [
     path("signup/", SignUpView.as_view(), name="signup"),
     # path('register_login/', views.register_login_view, name='register_login'),
+    path('', views.dashboard, name='home'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('add_pet/', views.add_pet, name='add_pet'),
     path('book_appointment/', views.book_appointment, name='book_appointment'),
