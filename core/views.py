@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from django.contrib.auth import authenticate, login, logout, get_user_model
@@ -69,6 +70,7 @@ def book_appointment(request):
     return render(request, 'book_appointment.html', {'form': form})
 
 
+@login_required
 def third_party_dashboard(request):
     # Ensure user is a third party/groomer
     if not request.user.is_authenticated or request.user.role != User.THIRD_PARTY:
@@ -85,6 +87,7 @@ def third_party_dashboard(request):
     return render(request, 'third_party_dashboard.html', context)
 
 
+@login_required
 def vet_dashboard(request):
     # Ensure user is a vet
     if not request.user.is_authenticated or request.user.role != User.VET:
@@ -114,6 +117,7 @@ def vet_dashboard(request):
     return render(request, 'vet_dashboard.html', context)
 
 
+@login_required
 def approve_appointment(request, appointment_id):
     if not request.user.is_authenticated or request.user.role not in [User.VET, User.THIRD_PARTY]:
         messages.warning(request, 'Not allowed')
@@ -130,7 +134,7 @@ def approve_appointment(request, appointment_id):
         return redirect('core:dashboard')
 
 
-class VaccinationSearchView(ListView):
+class VaccinationSearchView(LoginRequiredMixin, ListView):
     model = Vaccination
     template_name = 'vaccination_search.html'
     context_object_name = 'vaccinations'
