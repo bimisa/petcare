@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load bootstrap4 i18n %}
 
 {% block content %}
 <h2>Login</h2>
@@ -8,5 +8,6 @@
     <input type="hidden" name="action" value="login">
     {% bootstrap_form form %}
     <button class="btn btn-primary" type="submit">Login</button>
+    <p class="text-center"><a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a></p>
 </form>
 {% endblock %}
