@@ -3,3 +3,4 @@ Django==3.2.22
 django-bootstrap4==22.2
 django-widget-tweaks==1.4.9
 gunicorn
+whitenoise[brotli]
