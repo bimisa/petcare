@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from django.db.models import Q
 
-from .models import Pet, Appointment, Vaccination
+from .models import Pet, Appointment, Vaccination, SearchHistory
 from .forms import (PetForm, AppointmentForm, SignUpForm, VaccinationSearchForm, VaccinationForm)  # We'll define these forms later
 
 # Register/Login View
@@ -155,9 +155,26 @@ class VaccinationSearchView(LoginRequiredMixin, ListView):
         if vaccination_name:
             filters &= Q(vaccination_name__icontains=vaccination_name)
 
+        qs = queryset.filter(filters)
+
+        if any([ssn, pet_name, vaccination_name]) and qs.exists():
+            search_history = SearchHistory.objects.create(
+                ssn=ssn, pet_name=pet_name, vaccination_name=vaccination_name,
+                user=self.request.user
+            )
+
         return queryset.filter(filters)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = VaccinationSearchForm(self.request.GET)
         return context
+
+
+class SearchHistoryView(ListView):
+    template_name = 'search_history.html'
+    model = SearchHistory
+
+    def get_queryset(self):
+        queryset = super(SearchHistoryView, self).get_queryset()
+        return queryset.filter(user=self.request.user)

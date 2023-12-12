@@ -74,3 +74,11 @@ class Appointment(models.Model):
     @property
     def is_approved(self):
         return self.status == self.APPROVED
+
+
+class SearchHistory(models.Model):
+    ssn = models.CharField(max_length=500, null=True)
+    pet_name = models.CharField(max_length=500, null=True)
+    vaccination_name = models.CharField(max_length=500, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

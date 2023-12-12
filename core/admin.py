@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from .models import Appointment, Company, Vaccination, Pet
+from .models import Appointment, Company, Vaccination, Pet, SearchHistory
 
 
 User = get_user_model()
@@ -18,3 +18,4 @@ admin.site.register(Pet)
 admin.site.register(Vaccination)
 admin.site.register(Appointment)
 admin.site.register(Company)
+admin.site.register(SearchHistory)

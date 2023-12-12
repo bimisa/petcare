@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Search Vaccination Information</h2>
+
+        {% comment %}
+    <form method="get">
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    {% endcomment %}
+
+        <table class="table mt-4">
+            <thead>
+            <tr>
+                <th>Owner SSN</th>
+                <th>Pet Name</th>
+                <th>Vaccination Name</th>
+                <th>Search Date</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for search in object_list %}
+                <tr>
+
+                    <td>{{ search.ssn }}</td>
+                    <td>{{ search.pet_name }}</td>
+                    <td>{{ search.vaccination_name }}</td>
+                    <td>{{ search.timestamp }}</td>
+                    <td>
+                        <a href="{% url 'core:search_vaccinations' %}?ssn={{ search.ssn }}&pet_name={{ search.pet_name }}&vaccination_name={{ search.vaccination_name }}">Search
+                            again</a></td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

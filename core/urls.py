@@ -15,4 +15,5 @@ urlpatterns = [
     path('vet_dashboard/', views.vet_dashboard, name='vet_dashboard'),
     path('approve_appointment/<int:appointment_id>/', views.approve_appointment, name='approve_appointment'),
     path('search_vaccinations/', views.VaccinationSearchView.as_view(), name='search_vaccinations'),
+    path('search_history/', views.SearchHistoryView.as_view(), name='search_history'),
 ]
